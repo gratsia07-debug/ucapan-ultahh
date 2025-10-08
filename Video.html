@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Spesial</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --color-card-bg: #FFFFFF;
+  --color-text-primary: #3a255d;
+  --color-accent-gold: #c6a77d;
+  --color-cta-primary: #728ecf;
+}
+
+/* BODY */
+body {
+  margin:0; min-height:100vh;
+  display:flex; justify-content:center; align-items:center;
+  font-family:'Poppins', sans-serif;
+  overflow:hidden;
+  position:relative;
+}
+
+/* BACKGROUND BLUR */
+body::before {
+  content:'';
+  position:fixed; top:0; left:0;
+  width:100%; height:100%;
+  background-image:url('bg1.jpg'); /* ganti sesuai kebutuhan */
+  background-size:cover;
+  background-position:left top;
+  filter:blur(8px);
+  z-index:0;
+  animation: moveBg 40s linear infinite;
+}
+
+@keyframes moveBg {
+  0%   { background-position: left top; }
+  25%  { background-position: right top; }
+  50%  { background-position: right bottom; }
+  75%  { background-position: left bottom; }
+  100% { background-position: left top; }
+}
+
+/* CARD VIDEO */
+.card-wrapper {
+  position:relative;
+  z-index:2; /* di atas confetti */
+  padding:30px;
+  max-width:700px;
+  width:95%;
+  background-color: var(--color-card-bg);
+  border-radius:15px;
+  box-shadow:0 5px 30px rgba(0,0,0,0.1);
+  text-align:center;
+}
+
+/* VIDEO */
+video {
+  width:100%;
+  max-height:400px;
+  border-radius:12px;
+  outline:none;
+}
+
+/* HEADINGS */
+h1 {
+  font-family:'Playfair Display', serif;
+  color: var(--color-text-primary);
+  font-size:2.5em;
+  margin-bottom:20px;
+}
+
+/* TOMBOL CTA */
+.cta-button {
+  display:inline-block;
+  padding:14px 40px;
+  margin-top:20px;
+  border-radius:50px;
+  background-color:var(--color-cta-primary);
+  color:white;
+  font-weight:700;
+  text-decoration:none;
+  text-transform:uppercase;
+  box-shadow:0 6px 20px rgba(114,142,207,0.4);
+  transition:all 0.3s;
+}
+.cta-button:hover {
+  background-color: var(--color-accent-gold);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow:0 10px 20px rgba(198,167,125,0.5);
+}
+
+/* CONFETTI */
+#confetti-container {
+  position:absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  z-index:1; /* di bawah card */
+  pointer-events:none;
+}
+
+.confetti {
+  position:absolute;
+  width:10px; height:10px;
+  background:red;
+  top:-10px;
+  animation: fall 5s linear infinite;
+}
+@keyframes fall {
+  to { transform: translateY(100vh) rotate(720deg); }
+}
+</style>
+</head>
+<body>
+
+<!-- CONTAINER CONFETTI -->
+<div id="confetti-container"></div>
+
+<!-- KOTAK VIDEO -->
+<div class="card-wrapper">
+  <h1>Video Spesial untuk Kamu</h1>
+
+  <video controls autoplay>
+    <source src="video.mp4" type="video/mp4">
+    Browser kamu tidak mendukung video.
+  </video>
+
+  <br>
+  <a href="index.html" class="cta-button">Kembali ke Ucapan</a>
+</div>
+
+<script>
+// Confetti di belakang card
+const confettiContainer = document.getElementById('confetti-container');
+function createConfetti() {
+  const confetti = document.createElement("div");
+  confetti.classList.add("confetti");
+  confetti.style.left = Math.random() * window.innerWidth + "px";
+  confetti.style.backgroundColor = `hsl(${Math.random()*360},100%,50%)`;
+  confetti.style.animationDuration = (Math.random()*3+2) + "s";
+  confettiContainer.appendChild(confetti);
+  setTimeout(()=>{ confetti.remove(); }, 5000);
+}
+setInterval(createConfetti, 200);
+</script>
+
+</body>
+</html>

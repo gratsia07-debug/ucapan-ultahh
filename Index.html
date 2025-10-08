@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💌 Happy Birthday, My Dearest! 💌</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --color-bg-main: #f8f6f9;
+  --color-card-bg: #FFFFFF;
+  --color-text-primary: #3a255d;
+  --color-text-secondary: #7f8c8d;
+  --color-accent-gold: #c6a77d;
+  --color-cta-primary: #728ecf;
+  --box-height: 250px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin:0; min-height:100vh;
+  font-family:'Poppins', sans-serif;
+  display:flex; justify-content:center; align-items:center;
+  overflow:hidden;
+  position:relative;
+}
+
+/* BACKGROUND BLUR DENGAN ANIMASI */
+body::before {
+  content:'';
+  position:fixed; top:0; left:0;
+  width:100%; height:100%;
+  background-image:url('bg1.jpg'); /* ganti sesuai kebutuhan */
+  background-size:cover;
+  background-position:left top;
+  filter:blur(8px);
+  z-index:0;
+  animation: moveBg 40s linear infinite;
+}
+
+@keyframes moveBg {
+  0%   { background-position: left top; }
+  25%  { background-position: right top; }
+  50%  { background-position: right bottom; }
+  75%  { background-position: left bottom; }
+  100% { background-position: left top; }
+}
+
+@keyframes subtleFadeIn {
+  0% { opacity:0; transform:translateY(20px); }
+  100% { opacity:1; transform:translateY(0); }
+}
+
+/* CARD UCAPAN */
+.card-wrapper {
+  position:relative;
+  z-index:2; /* di atas confetti */
+  padding:40px;
+  max-width:600px;
+  width:90%;
+  background-color: var(--color-card-bg);
+  border-radius:15px;
+  box-shadow:0 5px 30px rgba(0,0,0,0.1);
+  text-align:center;
+  animation: subtleFadeIn 1.2s ease-out 0.5s forwards;
+  border:1px solid rgba(198,167,125,0.5);
+}
+
+.card-header h1 { font-family:'Playfair Display', serif; color:var(--color-text-primary);}
+.card-header h2 { font-family:'Poppins', sans-serif; color:var(--color-accent-gold);}
+
+.message-box {
+  background-color:#fcfcfc;
+  border-radius:8px;
+  padding:20px;
+  margin-bottom:25px;
+  border:1px solid var(--color-text-secondary);
+  height:var(--box-height);
+  overflow-y:auto;
+  position:relative;
+}
+
+.message-content { color: var(--color-text-primary); text-align:left; }
+.typing-cursor { background-color: var(--color-accent-gold); }
+
+.cta-button {
+  display:inline-block;
+  padding:14px 40px;
+  margin-top:15px;
+  border-radius:50px;
+  background-color:var(--color-cta-primary);
+  color:white;
+  font-weight:700;
+  text-decoration:none;
+  text-transform:uppercase;
+  box-shadow:0 6px 20px rgba(114,142,207,0.4);
+  transition:all 0.3s;
+}
+.cta-button:hover {
+  background-color: var(--color-accent-gold);
+  transform: translateY(-3px) scale(1.02);
+}
+
+.card-footer { margin-top:15px; font-size:0.85em; color:var(--color-text-secondary); }
+
+/* POPUP */
+.popup-overlay {
+  position:fixed; top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.3); /* tanpa blur supaya card jelas */
+  display:flex; justify-content:center; align-items:center;
+  z-index:3;
+}
+
+.popup-box {
+  background:white; padding:25px 30px; border-radius:12px;
+  box-shadow:0 5px 25px rgba(0,0,0,0.3); text-align:center;
+  max-width:350px; color:var(--color-text-primary);
+}
+
+.popup-btn {
+  background: var(--color-cta-primary);
+  color: white; border: none; padding:10px 25px;
+  border-radius:8px; cursor:pointer;
+}
+.popup-btn:hover { background: var(--color-accent-gold); }
+
+.hidden { display:none; }
+
+/* CONFETTI */
+#confetti-container {
+  position:absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  z-index:1; /* di bawah card */
+  pointer-events:none;
+}
+
+.confetti {
+  position:absolute;
+  width:10px; height:10px;
+  background:red;
+  top:-10px;
+  animation: fall 5s linear infinite;
+}
+@keyframes fall {
+  to { transform: translateY(100vh) rotate(720deg); }
+}
+</style>
+</head>
+<body>
+
+<!-- BACKSOUND -->
+<audio id="bg-music" loop>
+  <source src="Pretty.mp3" type="audio/mpeg">
+</audio>
+
+<!-- POPUP -->
+<div class="popup-overlay" id="popup">
+  <div class="popup-box">
+    <h3>💌 Hai Sayang 💌</h3>
+	  <p>Ada sesuatu yang spesial buat kamu Mungkin ini ga seberapa dan aku harap kamu suka </p>
+    <button class="popup-btn" onclick="closePopup()">Lihat</button>
+  </div>
+</div>
+
+<!-- CONFETTI DI BELAKANG CARD -->
+<div id="confetti-container"></div>
+
+<!-- CARD UCAPAN -->
+<div class="card-wrapper hidden" id="card">
+  <div class="card-header">
+    <h2>TO MY DEAREST LOVE</h2>
+    <h1>HAPPY BIRTHDAY</h1>
+    <h2>CLARA OCTARA</h2>
+  </div>
+
+  <div class="message-box">
+    <p id="typed-message" class="message-content"><span class="typing-cursor">|</span></p>
+  </div>
+
+  <a href="https://wa.me/6281328980064?text=Sayang%20aku%20sudah%20lihat%20ucapan%20ulang%20tahunnya%20sayang!" target="_blank" class="cta-button">KIRIM BALASAN SPESIAL</a>
+  <a href="video.html" class="cta-button" style="margin-top:10px;">Putar Video Spesial</a>
+
+  <div class="card-footer">Mazmur 91:16</div>
+</div>
+
+<script>
+function closePopup() {
+  document.getElementById("popup").style.display='none';
+  document.getElementById("card").classList.remove("hidden");
+  document.getElementById("bg-music").play().catch(()=>{});
+}
+
+const messageText = `Selamat ulang Tahun yah yang ke 19 sayang, semoga apa yang kamu lakukan di buat Tuhan berhasil, makin deket sama Tuhan, makin jadi berkat dan di berkati, kuliah lancar sampai lulus dengan hasil maksimal cumlaude Amin dan aku selalu jadi support system kamu sayang. 
+Hmm berat yahh kuliahnya hehe... tapi kamu pasti bisa lewatin kok! Aku yakin dan percaya kamu kuat walaupun sedikit ada nangis dan ngeluh uga. 
+If you tired, I'll be there for you... I LOVE YOU SAYANG THAN YOU COULD EVER IMAGINE NOW AND FOREVER AND EVER 💕❤️`;
+
+const targetElement=document.getElementById('typed-message');
+const cursor=targetElement.querySelector('.typing-cursor');
+let index=0;
+
+function typeMessage() {
+  if(index<messageText.length){
+    let char=messageText.charAt(index);
+    if(char==='\n'){ targetElement.insertBefore(document.createElement('br'), cursor);}
+    else { let span=document.createElement('span'); span.textContent=char; targetElement.insertBefore(span, cursor);}
+    index++;
+    setTimeout(typeMessage,80);
+    targetElement.parentElement.scrollTop=targetElement.parentElement.scrollHeight;
+  } else { cursor.style.display='none'; }
+}
+setTimeout(typeMessage,1200);
+
+// Confetti di belakang card
+const confettiContainer = document.getElementById('confetti-container');
+function createConfetti() {
+  const confetti = document.createElement("div");
+  confetti.classList.add("confetti");
+  confetti.style.left=Math.random()*window.innerWidth+"px";
+  confetti.style.backgroundColor=`hsl(${Math.random()*360},100%,50%)`;
+  confetti.style.animationDuration=(Math.random()*3+2)+"s";
+  confettiContainer.appendChild(confetti);
+  setTimeout(()=>{confetti.remove();},5000);
+}
+setInterval(createConfetti,200);
+</script>
+
+</body>
+</html>
